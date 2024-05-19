@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 
 class FinancesController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $financas = Finance::all();
         return view('financas.finance', compact('financas'));
     }
-    public function show(){
-        $financas = Finance::query()->get();
 
+    public function show()
+    {
+        $financas = Finance::query()->get();
 
 
         $total_entrada = 0;
@@ -23,7 +25,7 @@ class FinancesController extends Controller
             }
         }
 
- $total_saida = 0;
+        $total_saida = 0;
         foreach ($financas as $item) {
             if ($item->tipo == "saida") {
                 $total_saida += $item->valor;
@@ -36,10 +38,31 @@ class FinancesController extends Controller
         $total_br = number_format($total, 2, ",", '.');
 
 
+        return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br'));
+
+    }
 
 
-        return view('financas.finance', compact('total_saida_br','financas', 'total_entrada_br', 'total_br'));
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nome',
+            'descricao',
+            'valor',
+            'tipo',
+        ]);
 
+        Finance::create($request->all());
+
+        return redirect('/financas')->with('success', 'Finance record created successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $financa = Finance::findOrFail($id);
+        $financa->delete();
+
+        return redirect('/financas')->with('success', 'Finance record deleted successfully!');
     }
 
 }

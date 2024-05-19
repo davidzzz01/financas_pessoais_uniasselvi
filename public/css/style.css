@@ -10,13 +10,14 @@
 .resume > div {
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 0px 5px #ccc;
+    box-shadow: 0px 0px 10px 0px #333;
     border-radius: 10px;
     padding: 10px;
     width: 405px;
     height: 150px;
 }
 .incomes{
+
     color:green;
     font-size: 70px;
     text-align: center;
@@ -39,4 +40,27 @@ footer {
     background-color: #343a40; /* bgdark - fundo escuro */
     color: #fff; /* Cor da fonte branca */
     padding: 20px 0; /* Espaçamento interno */
+}
+
+.custom-table thead {
+    background-color: #031525;
+    color: #439DF8;
+}
+
+.custom-table tbody tr:nth-child(odd) {
+    background-color: #EBF5FF;
+}
+table th {
+    background-color: #031525;
+    color: #439DF8;
+}
+
+
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #D2E9FF;
+}
+.custom-thead {
+    background-color: #031525;
+    color: #439DF8;
 }

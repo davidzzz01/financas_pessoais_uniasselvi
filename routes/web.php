@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 Route::get('/financas', [FinancesController::class, 'index']);
 Route::get('/financas', [FinancesController::class, 'show']);
+Route::post('/financas', [FinancesController::class, 'store']);
+Route::delete('/financas/{id}', [FinancesController::class, 'destroy']);
