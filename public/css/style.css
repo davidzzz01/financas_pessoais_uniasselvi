@@ -13,7 +13,7 @@
     box-shadow: 0px 0px 10px 0px #333;
     border-radius: 10px;
     padding: 10px;
-    width: 405px;
+    width: 340px;
     height: 150px;
 }
 .incomes{
@@ -50,6 +50,10 @@ footer {
 .custom-table tbody tr:nth-child(odd) {
     background-color: #EBF5FF;
 }
+table td {
+    height: 45px;
+}
+
 table th {
     background-color: #031525;
     color: #439DF8;
@@ -63,4 +67,21 @@ table th {
 .custom-thead {
     background-color: #031525;
     color: #439DF8;
+}
+footer {
+    background-color: #031525;
+    color: #439DF8;
+    text-align: center;
+    padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-top: 5px;
+}
+*{
+    font-family: "Nunito Sans", sans-serif;;
+}
+btn-desp{
+    border-radius: 10px;
+    color:white;
 }

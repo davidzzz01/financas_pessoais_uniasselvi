@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('descricao');
+            $table->date('data');
             $table->double('valor', 8, 2);
             $table->string('tipo');
             $table->timestamps();

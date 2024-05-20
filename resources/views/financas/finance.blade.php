@@ -28,7 +28,7 @@
         </div>
     </nav>
 
-    <main>
+
         <div class="container mt-5">
             <div class="resume" >
                 <div class="text-painel">
@@ -48,12 +48,13 @@
             <table class="table table-bordered mt-4 table-info">
                 <thead class="custom-thead">
                 <tr>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">ID</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Nome</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Descrição</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Valor</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Tipo</th>
-                    <th scope="col" style="width: 100px; background-color: #031525;color: #439DF8">Ações</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8; width:50px">ID</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8">Nome:</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8">Descrição:</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8;width: 70px;">Data:</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8">Valor R$:</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8;width: 80px">Tipo</th>
+                    <th scope="col" style="width: 100px; background-color: #031525;color: #439DF8;width:40px;">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,20 +68,73 @@
                             <td>{{$financa->id}}</td>
                             <td>{{$financa->nome}}</td>
                             <td>{{$financa->descricao}}</td>
+                            <td>{{ date('d/m/Y', strtotime($financa->data_despesa)) }}</td>
+
                             <td>{{$financa->valor}}</td>
-                            <td>{{$financa->tipo}}</td>
-                            <td class="d-flex">
-                                <button type="button" class="btn btn-info" style="margin-right: 10px; width: 40px; height: 40px;">
+                            <td style=" color:{{$financa->tipo == 'entrada' ? 'limegreen' : 'red'}}">{{strtoupper($financa->tipo)}}</td>
+                            <td class="d-flex justify-content-center align-items-center">
+
+                                <button type="button" class="btn btn-info d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#despesaModal" style="margin-right: 10px; width: 35px; height: 35px;">
                                     <i class="fa-solid fa-pencil" style="color: white; font-size: 20px;"></i>
                                 </button>
-                                <form action="/financas/{{$financa->id}}" method="POST" onsubmit="return confirm('Are you sure?');">
+
+
+                                <div class="modal fade" id="despesaModal" tabindex="-1" aria-labelledby="despesaModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="despesaModalLabel">Editar Despesa</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="despesaForm" method="POST" action="{{ route('financas.update', $financa->id) }}">
+                                                    @method('PUT')
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="nome">Nome</label>
+                                                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" value="{{$financa->nome}}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="descricao">Descrição</label>
+                                                        <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Descrição" value="{{$financa->descricao}}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="data">Data</label>
+                                                        <input type="date" class="form-control" id="data" name="data_despesa" value="{{$financa->data_despesa}}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="valor">Valor</label>
+                                                        <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor" value="{{$financa->valor}}" step="0.01">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tipo">Tipo</label>
+                                                        <select class="form-select" name="tipo">
+                                                            <option value="entrada" {{$financa->tipo == 'entrada' ? 'selected' : ''}}>ENTRADA</option>
+                                                            <option value="saida" {{$financa->tipo == 'saida' ? 'selected' : ''}}>SAÍDA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <form action="/financas/{{$financa->id}}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir o registro?');" class="d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" style="width: 40px; height: 40px;">
+                                    <button type="submit" class="btn btn-danger d-flex align-items-center justify-content-center mt-3" style="margin-right: 10px;width: 35px; height: 35px;">
                                         <i class="fa-solid fa-trash" style="color: white; font-size: 20px;"></i>
                                     </button>
                                 </form>
                             </td>
+
                         </tr>
                     @endforeach
                 @endif
@@ -88,9 +142,63 @@
             </table>
 
 
-            <button type="button" class="btn btn-success" style="background-color: #439DF8; color: #031525; width: 250px; height: 60px; font-size: 18px;">Cadastrar nova despesa <i class="fa-light fa-plus"></i></button>
+            <button type="button"  data-toggle="modal" data-target="#Modal" style="background-color: #439DF8; color: #031525; width: 250px; height: 60px; font-size: 18px; color:#031525FF; border-radius: 5px; border: none">Cadastrar nova despesa <i class="fa-light fa-plus"></i></button>
+            <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="despesaModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="despesaModalLabel">Cadastrar Despesa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="despesaForm" method="POST" action="{{ route('financas.store') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricao">Descrição</label>
+                                    <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Descrição">
+                                </div>
+                                <div class="form-group">
+                                    <label for="data_despesa">Data</label>
+                                    <input type="date" class="form-control" id="data_despesa" name="data_despesa">
+                                </div>
+                                <div class="form-group">
+                                    <label for="valor">Valor</label>
+                                    <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tipo">Tipo</label>
+                                    <select class="form-select" name="tipo">
+                                        <option value="entrada">ENTRADA</option>
+                                        <option value="saida">SAÍDA</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </form>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </main>
 
 
+
+    <footer class="text-center mt-5" style="background-color: #031525; color: #439DF8;">
+        <div class="container-fluid ">
+            <p class="navbar-brand" style="color:#439DF8;">&copy; 2024 David Dantas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 @endsection
+

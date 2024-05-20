@@ -48,6 +48,7 @@ class FinancesController extends Controller
         $request->validate([
             'nome',
             'descricao',
+            'data_despesa',
             'valor',
             'tipo',
         ]);
@@ -57,12 +58,30 @@ class FinancesController extends Controller
         return redirect('/financas')->with('success', 'Finance record created successfully!');
     }
 
+
     public function destroy($id)
     {
         $financa = Finance::findOrFail($id);
         $financa->delete();
 
         return redirect('/financas')->with('success', 'Finance record deleted successfully!');
+    }
+    public function update(Request $request, $id){
+        $financas = Finance::findOrFail($id);
+        $financas->update(
+            [
+                'nome' => $request->nome,
+                'descricao' => $request->descricao,
+                'data_despesa' => $request->data_despesa,
+                'valor' => $request->valor,
+                'tipo' => $request->tipo
+            ]
+        );
+        return redirect('/financas');
+    }
+    public function edit($id){
+        $financa = Finance::findOrFail($id);
+        return view('/financas', compact('financa'));
     }
 
 }

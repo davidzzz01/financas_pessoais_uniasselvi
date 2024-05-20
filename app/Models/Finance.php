@@ -12,6 +12,7 @@ class Finance extends Model
     protected $fillable=[
         'nome',
         'descricao',
+        'data_despesa',
         'valor',
         'tipo'
     ];
