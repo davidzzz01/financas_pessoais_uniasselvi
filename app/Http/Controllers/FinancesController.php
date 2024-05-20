@@ -17,26 +17,26 @@ class FinancesController extends Controller
     {
         $financas = Finance::query()->get();
 
-
         $total_entrada = 0;
+        $total_saida = 0;
+
+//
         foreach ($financas as $item) {
             if ($item->tipo == "entrada") {
                 $total_entrada += $item->valor;
-            }
-        }
-
-        $total_saida = 0;
-        foreach ($financas as $item) {
-            if ($item->tipo == "saida") {
+                $item->class_tipo = 'limegreen;text-align:center;text-transform:uppercase';
+            } elseif ($item->tipo == "saida") {
                 $total_saida += $item->valor;
+                $item->class_tipo = 'red;text-align:center;text-transform:uppercase';
             }
+
+            $item->valor_formatado = number_format($item->valor, 2, ",", '.');
         }
 
         $total = $total_entrada - $total_saida;
         $total_entrada_br = number_format($total_entrada, 2, ",", '.');
         $total_saida_br = number_format($total_saida, 2, ",", '.');
         $total_br = number_format($total, 2, ",", '.');
-
 
         return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br'));
 

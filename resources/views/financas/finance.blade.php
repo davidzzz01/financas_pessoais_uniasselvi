@@ -49,10 +49,10 @@
                 <thead class="custom-thead">
                 <tr>
                     <th scope="col" style="background-color: #031525;color: #439DF8; width:50px">ID</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Nome:</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Descrição:</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8;width: 70px;">Data:</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Valor R$:</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8">Nome</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8">Descrição</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8;width: 70px;">Data</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8">Valor</th>
                     <th scope="col" style="background-color: #031525;color: #439DF8;width: 80px">Tipo</th>
                     <th scope="col" style="width: 100px; background-color: #031525;color: #439DF8;width:40px;">Ações</th>
                 </tr>
@@ -70,8 +70,8 @@
                             <td>{{$financa->descricao}}</td>
                             <td>{{ date('d/m/Y', strtotime($financa->data_despesa)) }}</td>
 
-                            <td>{{$financa->valor}}</td>
-                            <td style=" color:{{$financa->tipo == 'entrada' ? 'limegreen' : 'red'}}">{{strtoupper($financa->tipo)}}</td>
+                            <td>{{$financa->valor_formatado}}</td>
+                            <td style="color:{{$financa->class_tipo}}"> {{$financa->tipo}}</td>
                             <td class="d-flex justify-content-center align-items-center">
 
                                 <button type="button" class="btn btn-info d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#despesaModal" style="margin-right: 10px; width: 35px; height: 35px;">
@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="valor">Valor</label>
-                                    <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor" step="0.01">
+                                    <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor" min="0.1">
                                 </div>
                                 <div class="form-group">
                                     <label for="tipo">Tipo</label>
