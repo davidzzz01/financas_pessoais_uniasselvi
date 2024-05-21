@@ -33,12 +33,23 @@ class FinancesController extends Controller
             $item->valor_formatado = number_format($item->valor, 2, ",", '.');
         }
 
+
         $total = $total_entrada - $total_saida;
         $total_entrada_br = number_format($total_entrada, 2, ",", '.');
         $total_saida_br = number_format($total_saida, 2, ",", '.');
         $total_br = number_format($total, 2, ",", '.');
 
-        return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br'));
+
+        if ($total_br < '0,00') {
+            $total_cor = 'red';
+        } elseif ($total_br > '0,00') {
+            $total_cor = 'blue';
+        } else {
+            $total_cor = '#A9A9A9';
+        }
+
+
+        return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br', 'total_cor'));
 
     }
 

@@ -31,6 +31,7 @@
 
         <div class="container mt-5">
             <div class="resume" >
+
                 <div class="text-painel">
                     ENTRADAS: R$
                     <span class="incomes">{{$total_entrada_br}}</span>
@@ -41,7 +42,7 @@
                 </div>
                 <div class="text-painel">
                     TOTAL: R$
-                    <span class="total">{{$total_br}}</span>
+                    <span style='color:{{$total_cor}}' class="total">{{$total_br}}</span>
                 </div>
             </div>
 
@@ -52,7 +53,7 @@
                     <th scope="col" style="background-color: #031525;color: #439DF8">Nome</th>
                     <th scope="col" style="background-color: #031525;color: #439DF8">Descrição</th>
                     <th scope="col" style="background-color: #031525;color: #439DF8;width: 70px;">Data</th>
-                    <th scope="col" style="background-color: #031525;color: #439DF8">Valor</th>
+                    <th scope="col" style="background-color: #031525;color: #439DF8;">Valor</th>
                     <th scope="col" style="background-color: #031525;color: #439DF8;width: 80px">Tipo</th>
                     <th scope="col" style="width: 100px; background-color: #031525;color: #439DF8;width:40px;">Ações</th>
                 </tr>
@@ -70,7 +71,7 @@
                             <td>{{$financa->descricao}}</td>
                             <td>{{ date('d/m/Y', strtotime($financa->data_despesa)) }}</td>
 
-                            <td>{{$financa->valor_formatado}}</td>
+                            <td style="justify-content: right">{{$financa->valor_formatado}}</td>
                             <td style="color:{{$financa->class_tipo}}"> {{$financa->tipo}}</td>
                             <td class="d-flex justify-content-center align-items-center">
 
@@ -169,7 +170,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="valor">Valor</label>
-                                    <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor" min="0.1">
+                                    <input type="number" class="form-control" id="valor" name="valor" placeholder="Valor" min="0">
                                 </div>
                                 <div class="form-group">
                                     <label for="tipo">Tipo</label>
