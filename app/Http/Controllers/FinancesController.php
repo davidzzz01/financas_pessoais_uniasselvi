@@ -48,8 +48,10 @@ class FinancesController extends Controller
             $total_cor = '#A9A9A9';
         }
 
+        $data_br=date('d/m/Y', strtotime($financa->data_despesa));
 
-        return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br', 'total_cor'));
+
+        return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br', 'total_cor', 'data_br'));
 
     }
 

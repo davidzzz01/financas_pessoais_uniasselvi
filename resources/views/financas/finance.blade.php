@@ -69,7 +69,7 @@
                             <td>{{$financa->id}}</td>
                             <td>{{$financa->nome}}</td>
                             <td>{{$financa->descricao}}</td>
-                            <td>{{ date('d/m/Y', strtotime($financa->data_despesa)) }}</td>
+                            <td>{{ $data_br }}</td>
 
                             <td style="justify-content: right">{{$financa->valor_formatado}}</td>
                             <td style="color:{{$financa->class_tipo}}"> {{$financa->tipo}}</td>
