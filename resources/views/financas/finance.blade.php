@@ -45,6 +45,23 @@
                     <span style='color:{{$total_cor}}' class="total">{{$total_br}}</span>
                 </div>
             </div>
+            @if(session('inserted'))
+                <div class="message-box inserted">
+                    <p>{{ session('inserted') }}</p>
+                </div>
+            @endif
+
+            @if(session('deleted'))
+                <div class="message-box deleted">
+                    <p>{{ session('deleted') }}</p>
+                </div>
+            @endif
+
+            @if(session('edited'))
+                <div class="message-box edited">
+                    <p>{{ session('edited') }}</p>
+                </div>
+            @endif
 
             <table class="table table-bordered mt-4 table-info">
                 <thead class="custom-thead">
@@ -69,7 +86,7 @@
                             <td>{{$financa->id}}</td>
                             <td>{{$financa->nome}}</td>
                             <td>{{$financa->descricao}}</td>
-                            <td>{{ date('d/m/Y', strtotime($financa->data_despesa)) }}</td>
+                            <td>{{ date('d/m/Y', strtotime($financa->data_despesa)); }}</td>
 
                             <td style="justify-content: right">{{$financa->valor_formatado}}</td>
                             <td style="color:{{$financa->class_tipo}}"> {{$financa->tipo}}</td>

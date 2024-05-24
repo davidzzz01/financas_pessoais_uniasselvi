@@ -13,9 +13,7 @@ use App\Http\Controllers\FinancesController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 Route::get('/financas', [FinancesController::class, 'index']);
 Route::get('/financas', [FinancesController::class, 'show']);
 Route::post('/financas', [FinancesController::class, 'store'])->name('financas.store');

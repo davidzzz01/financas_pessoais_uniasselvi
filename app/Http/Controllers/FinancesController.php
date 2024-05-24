@@ -16,7 +16,7 @@ class FinancesController extends Controller
     public function show()
     {
         $financas = Finance::query()->get();
-
+        ;
         $total_entrada = 0;
         $total_saida = 0;
 
@@ -29,6 +29,7 @@ class FinancesController extends Controller
                 $total_saida += $item->valor;
                 $item->class_tipo = 'red;text-align:center;text-transform:uppercase';
             }
+
 
             $item->valor_formatado = number_format($item->valor, 2, ",", '.');
         }
@@ -43,7 +44,7 @@ class FinancesController extends Controller
         if ($total_br < '0,00') {
             $total_cor = 'red';
         } elseif ($total_br > '0,00') {
-            $total_cor = 'blue';
+            $total_cor = 'green';
         } else {
             $total_cor = '#A9A9A9';
         }
@@ -66,7 +67,8 @@ class FinancesController extends Controller
 
         Finance::create($request->all());
 
-        return redirect('/financas')->with('success', 'Finance record created successfully!');
+        return redirect('/financas')->with('inserted', 'Despesa cadastrada com sucesso!');
+
     }
 
 
@@ -75,7 +77,7 @@ class FinancesController extends Controller
         $financa = Finance::findOrFail($id);
         $financa->delete();
 
-        return redirect('/financas')->with('success', 'Finance record deleted successfully!');
+        return redirect('/financas')->with('deleted', 'Despesa excluída com sucesso!');;
     }
     public function update(Request $request, $id){
         $financas = Finance::findOrFail($id);
@@ -88,7 +90,7 @@ class FinancesController extends Controller
                 'tipo' => $request->tipo
             ]
         );
-        return redirect('/financas');
+        return redirect('/financas')->with('edited', 'Despesa alterada com sucesso!');
     }
     public function edit($id){
         $financa = Finance::findOrFail($id);

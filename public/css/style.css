@@ -85,3 +85,25 @@ btn-desp{
     border-radius: 10px;
     color:white;
 }
+.message-box {
+    padding: 20px;
+    font-size: 20px;
+    width: 100%;
+}
+
+.inserted {
+    background-color: #e2f7cb;
+    color: #2d972d;
+}
+
+.deleted {
+    background-color: #ffd2d2;
+    color: #dc3545;
+}
+
+.edited {
+    background-color: #cce5ff;
+    color: #1c8cff;
+}
+
+
