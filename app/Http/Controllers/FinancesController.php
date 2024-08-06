@@ -50,6 +50,8 @@ class FinancesController extends Controller
         }
 
 
+
+
         return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br', 'total_cor'));
 
     }
@@ -60,7 +62,7 @@ class FinancesController extends Controller
         $request->validate([
             'nome',
             'descricao',
-            'data_despesa',
+            'data',
             'valor',
             'tipo',
         ]);
