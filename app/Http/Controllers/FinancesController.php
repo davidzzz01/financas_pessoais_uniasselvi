@@ -10,93 +10,91 @@ class FinancesController extends Controller
     public function index()
     {
         $financas = Finance::all();
-        return view('financas.finance', compact('financas'));
-    }
+        $totais = $this->calcularTotais($financas);
 
-    public function show()
-    {
-        $financas = Finance::query()->get();
-        ;
-        $total_entrada = 0;
-        $total_saida = 0;
-
-//
-        foreach ($financas as $item) {
-            if ($item->tipo == "entrada") {
-                $total_entrada += $item->valor;
-                $item->class_tipo = 'limegreen;text-align:center;text-transform:uppercase';
-            } elseif ($item->tipo == "saida") {
-                $total_saida += $item->valor;
-                $item->class_tipo = 'red;text-align:center;text-transform:uppercase';
-            }
-
-
-            $item->valor_formatado = number_format($item->valor, 2, ",", '.');
-        }
-
-
-        $total = $total_entrada - $total_saida;
-        $total_entrada_br = number_format($total_entrada, 2, ",", '.');
-        $total_saida_br = number_format($total_saida, 2, ",", '.');
-        $total_br = number_format($total, 2, ",", '.');
-
-
-        if ($total_br < '0,00') {
-            $total_cor = 'red';
-        } elseif ($total_br > '0,00') {
-            $total_cor = 'green';
-        } else {
-            $total_cor = '#A9A9A9';
-        }
-
-
-
-
-        return view('financas.finance', compact('total_saida_br', 'financas', 'total_entrada_br', 'total_br', 'total_cor'));
-
+        return view('financas.finance', [
+            'financas' => $financas,
+            'totalEntradaBr' => $totais['entrada'],
+            'totalSaidaBr' => $totais['saida'],
+            'totalBr' => $totais['liquido'],
+            'totalCor' => $totais['cor'],
+        ]);
     }
 
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nome',
-            'descricao',
-            'data',
-            'valor',
-            'tipo',
-        ]);
+        $validated = $this->validateRequest($request);
+        Finance::create($validated);
 
-        Finance::create($request->all());
-
-        return redirect('/financas')->with('inserted', 'Despesa cadastrada com sucesso!');
-
+        return redirect('/financas')->with('success', 'Despesa cadastrada com sucesso!');
     }
 
-
-    public function destroy($id)
+    public function destroy(Finance $financa)
     {
-        $financa = Finance::findOrFail($id);
         $financa->delete();
-
-        return redirect('/financas')->with('deleted', 'Despesa excluída com sucesso!');;
-    }
-    public function update(Request $request, $id){
-        $financas = Finance::findOrFail($id);
-        $financas->update(
-            [
-                'nome' => $request->nome,
-                'descricao' => $request->descricao,
-                'data_despesa' => $request->data_despesa,
-                'valor' => $request->valor,
-                'tipo' => $request->tipo
-            ]
-        );
-        return redirect('/financas')->with('edited', 'Despesa alterada com sucesso!');
-    }
-    public function edit($id){
-        $financa = Finance::findOrFail($id);
-        return view('/financas', compact('financa'));
+        return redirect('/financas')->with('success', 'Despesa excluída com sucesso!');
     }
 
+    public function edit(Finance $financa)
+    {
+        return view('financas.edit', compact('financa'));
+    }
+
+    public function update(Request $request, Finance $financa)
+    {
+        $validated = $this->validateRequest($request);
+        $financa->update($validated);
+
+        return redirect('/financas')->with('success', 'Despesa alterada com sucesso!');
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
+            'nome' => 'required|string|max:255',
+            'descricao' => 'nullable|string',
+            'data' => 'required|date',
+            'valor' => 'required|numeric|min:0.01',
+            'tipo' => 'required|in:entrada,saida'
+        ]);
+    }
+
+    private function calcularTotais($financas)
+    {
+        $totais = [
+            'entrada' => 0,
+            'saida' => 0,
+        ];
+
+        $financas->each(function ($item) use (&$totais) {
+            $item->valor_formatado = number_format($item->valor, 2, ',', '.');
+
+            if ($item->tipo === 'entrada') {
+                $totais['entrada'] += $item->valor;
+                $item->class_tipo = 'limegreen';
+            } elseif ($item->tipo === 'saida') {
+                $totais['saida'] += $item->valor;
+                $item->class_tipo = 'red';
+            }
+        });
+
+        $totalLiquido = $totais['entrada'] - $totais['saida'];
+
+        return [
+            'entrada' => number_format($totais['entrada'], 2, ',', '.'),
+            'saida' => number_format($totais['saida'], 2, ',', '.'),
+            'liquido' => number_format($totalLiquido, 2, ',', '.'),
+            'cor' => $this->getCorTotal($totalLiquido),
+        ];
+    }
+
+    private function getCorTotal($valor)
+    {
+        return match (true) {
+            $valor < 0 => 'red',
+            $valor > 0 => 'green',
+            default => '#A9A9A9',
+        };
+    }
 }

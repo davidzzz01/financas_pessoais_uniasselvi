@@ -13,5 +13,5 @@
             <span style="color: {{ $totalCor }}" class="total">{{ $totalBr }}</span>
         </div>
     </div>
-    
+
 </div>

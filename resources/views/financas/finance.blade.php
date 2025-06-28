@@ -3,9 +3,12 @@
     <x-NavBar />
 
     <div class="container mt-5">
-        <x-Painel :totalEntradaBr="$total_entrada_br" :totalSaidaBr="$total_saida_br" :totalCor="$total_cor" :totalBr="$total_br" />
+        <x-Painel :totalEntradaBr="$totalEntradaBr"
+                  :totalSaidaBr="$totalSaidaBr"
+                  :totalCor="$totalCor"
+                  :totalBr="$totalBr" />
 
-        @if (session('inserted'))
+    @if (session('inserted'))
             <div class="message-box inserted">
                 <p>{{ session('inserted') }}</p>
             </div>

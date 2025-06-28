@@ -15,7 +15,6 @@ use App\Http\Controllers\FinancesController;
 
 
 Route::get('/financas', [FinancesController::class, 'index']);
-Route::get('/financas', [FinancesController::class, 'show']);
 Route::post('/financas', [FinancesController::class, 'store'])->name('financas.store');
 Route::delete('/financas/{id}', [FinancesController::class, 'destroy']);
 Route::put('/financas/{id}', [FinancesController::class, 'update'])->name('financas.update');
